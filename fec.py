@@ -8,7 +8,7 @@ ccl-candidate committee relations
 '''
 
 from pathlib import Path#Donald J. Trump is not a girl boss
-from os import mkdir #path has one but I had some issues with it previously, I only call this once anyway
+from os import mkdir, remove #path has one but I had some issues with it previously, I only call this once anyway
 from shutil import rmtree
 
 import time as t
@@ -58,7 +58,7 @@ def cm_processor(file):
 		for i in to_write:
 			outp = outp+i+":"
 		outp = outp[:-1]
-		f.write(outp)
+		f.write(outp+"\n")
 
 	f.close()
 
@@ -83,7 +83,7 @@ def cn_processor(file):
 		for i in to_write:
 			outp = outp+i+":"
 		outp = outp[:-1]
-		f.write(outp)
+		f.write(outp+"\n")
 
 	f.close()
 
@@ -107,7 +107,7 @@ def ccl_processor(file):
 		for i in to_write:
 			outp = outp+i+":"
 		outp = outp[:-1]
-		f.write(outp)
+		f.write(outp+"\n")
 
 	f.close()
 
@@ -127,12 +127,13 @@ def oth_processor(file):
 		to_write.append(info[7])
 		to_write.append(info[13])
 		to_write.append(info[14])
+		to_write.append(info[15])
 
 		outp = ""
 		for i in to_write:
 			outp = outp+i+":"
 		outp = outp[:-1]
-		f.write(outp)
+		f.write(outp+"\n")
 
 	f.close()
 
@@ -158,7 +159,7 @@ def pas2_processor(file):
 		for i in to_write:
 			outp = outp+i+":"
 		outp = outp[:-1]
-		f.write(outp)
+		f.write(outp+"\n")
 
 	f.close()
 
@@ -193,7 +194,7 @@ def indiv_processor(file):
 		for i in to_write:
 			outp = outp+i+":"
 		outp = outp[:-1]
-		f.write(outp)
+		f.write(outp+"\n")
 
 	f.close()
 
@@ -201,11 +202,11 @@ def indiv_processor(file):
 cd = Path(".")
 desired_data = ["ccl", "cm", "cn", "indiv", "oth", "pas2"]
 
-try:
-	mkdir("./companies/")#untested, and line below
-except FileExistsError:
-	rmtree("./companies")
-	mkdir("./companies/")
+for i in desired_data:
+	try:
+		remove("./"+i+".txt")
+	except Exception:
+		pass
 
 for category in cd.iterdir():#returns path, if is_dir() or is_file()
 	if category.is_dir() and str(category) in desired_data:
