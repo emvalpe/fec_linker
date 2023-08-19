@@ -6,3 +6,6 @@ Step 1: run fec.py in the directory with your downloded data
 Step 2: depending on what you want to do run either search.py or fec_processing.py
  - search.py allows you to search a politicians name and presents the user with a network centered around just that candidate ex: biden, joseph
  - fec_processing.py creates a huge network that takes forever to make and even longer to view up close, best for just a screenshot
+
+Improvements: 
+ - Add 2 LDA databases house and senate are seemingly free to be determined
