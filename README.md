@@ -9,3 +9,6 @@ Step 2: depending on what you want to do run either search.py or fec_processing.
 
 Improvements: 
  - Add 2 LDA databases house and senate are seemingly free to be determined
+
+Results of Search.py:
+![alt text](https://github.com/[emvalpe]/[fec_linker]/blob/[main]/res.png?raw=true)
