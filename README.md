@@ -11,4 +11,4 @@ Improvements:
  - Add 2 LDA databases house and senate are seemingly free to be determined
 
 Results of Search.py:
-![alt text](https://github.com/[emvalpe]/[fec_linker]/blob/[main]/res.png?raw=true)
+![alt text](https://github.com/emvalpe/fec_linker/blob/main/res.png?raw=true)
