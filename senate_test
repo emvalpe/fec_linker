@@ -1,0 +1,75 @@
+from pyvis.network import Network
+import time as t
+
+import requests
+import json
+
+#pas2????
+cn = open("cn.txt", "r")
+cand = (input("Name(last, first): ").lower()).replace(" ", "")
+names = cand.split(",")
+
+cands = []
+cand_matches = []
+while True:
+	line = cn.readline()
+	if line == "":break
+
+	line = line.split(":")
+	line[1]=line[1].lower()
+	if line[1].find(names[0]) != -1 and line[1].find(names[1]) != -1:
+		print(line)
+		cand_matches.append(line[0])
+		cands.append(line)
+cn.close()
+cand_matches = list(set(cand_matches))
+
+net = Network()#directed=True)
+
+for i in cands:
+	if i[2].upper() == "DEM":
+		color = "#0000ff"
+	elif i[2].upper() == "REP":
+		color = "#ff0000"
+	else:
+		color = "#ffff00"
+
+	net.add_node(i[0], label=i[1]+":"+i[3], color=color, shape="dot")
+
+#code to readd
+answ = input("Lobbying data[yes , no]? ")#senate api rules: 120 minute if reged 15/min otherwise
+if answ.lower() == "yes" or answ.lower() == "y":
+	print("Only able to pull data for positions in the US senate for now: must be before 1999")
+	
+	senators = []
+	for i in cands:
+		if i[5].lower().replace("\n", "") == "s" and int(i[3])>= 2000:
+			print("Match in year: "+str(i[3]))
+			senators.append(i)
+
+	url = "https://lda.senate.gov/api/v1/filings/?ordering=dt_posted"
+	ite = 1
+	og_start = t.time()
+	start_of_requests = t.time()
+	try:
+		all_lobbying_data = json.loads(requests.get(url+str(ite)).text)
+	except Exception as e:
+		print("error: " + str(e))
+
+	total_records = 0
+	while("next" in all_lobbying_data):
+		ite+=1
+		if ite%15 == 0:
+			print("Pausing for a moment")
+			t.sleep(60-round(t.time()-start_of_requests))
+
+		for filing_bit in all_lobbying_data["results"]:
+			print(str(filing_bit))
+			print("#####################"+str(ite))
+			total_records+=1
+
+		all_lobbying_data = json.loads(requests.get(url + str(ite)).text)
+		if ite%15 == 0:
+			start_of_requests = t.time()
+
+	print("total total_records to analyze: " + str(total_records)+" in:"+str((t.time()-og_start)/60) + " Min")
